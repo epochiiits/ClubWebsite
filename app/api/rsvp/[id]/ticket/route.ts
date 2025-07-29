@@ -1,8 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server"
 import connectDB from "@/lib/mongodb"
 import RSVP from "@/models/RSVP"
+import User from "@/models/User"
 import { generateTicketPDF } from "@/lib/ticket-generator"
-import { getServerSession } from "next-auth"
+import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -10,7 +11,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const { id } = await params
     const session = await getServerSession(authOptions)
 
-    if (!session?.user) {
+    if (!session?.user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -28,14 +29,14 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     if (rsvp.user.email !== session.user.email && session.user.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-console.log("Generating ticket for RSVP:", {
-  eventTitle: rsvp.event?.title,
-  eventDate: rsvp.event?.date,
-  eventVenue: rsvp.event?.venue,
-  attendeeName: rsvp.user?.name,
-  attendeeEmail: rsvp.user?.email,
-  ticketId: rsvp.ticketId,
-})
+    console.log("Generating ticket for RSVP:", {
+      eventTitle: rsvp.event?.title,
+      eventDate: rsvp.event?.date,
+      eventVenue: rsvp.event?.venue,
+      attendeeName: rsvp.user?.name,
+      attendeeEmail: rsvp.user?.email,
+      ticketId: rsvp.ticketId,
+    })
 
     try {
       const pdfBuffer = await generateTicketPDF({
