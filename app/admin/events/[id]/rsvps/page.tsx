@@ -1,89 +1,105 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { ArrowLeft, Download, Users, UserCheck, UserX, Clock } from "lucide-react"
-import Link from "next/link"
-import { toast } from "sonner"
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { ArrowLeft, Download, Users, UserCheck } from "lucide-react";
+import Link from "next/link";
+import { toast } from "sonner";
 
-export default function EventRSVPsPage({ params }: { params: Promise<{ id: string }> }) {
-  const [event, setEvent] = useState<any>(null)
-  const [rsvps, setRSVPs] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [eventId, setEventId] = useState<string>("")
+export default function EventRSVPsPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const [event, setEvent] = useState<any>(null);
+  const [rsvps, setRSVPs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [eventId, setEventId] = useState<string>("");
 
   useEffect(() => {
     const getParams = async () => {
-      const resolvedParams = await params
-      setEventId(resolvedParams.id)
-      fetchEventAndRSVPs(resolvedParams.id)
-    }
-    getParams()
-  }, [params])
+      const resolvedParams = await params;
+      setEventId(resolvedParams.id);
+      fetchEventAndRSVPs(resolvedParams.id);
+    };
+    getParams();
+  }, [params]);
 
   const fetchEventAndRSVPs = async (id: string) => {
     try {
       const [eventResponse, rsvpResponse] = await Promise.all([
         fetch(`/api/events/${id}`),
         fetch(`/api/admin/events/${id}/rsvps`),
-      ])
+      ]);
 
       if (eventResponse.ok) {
-        const eventData = await eventResponse.json()
-        setEvent(eventData)
+        const eventData = await eventResponse.json();
+        setEvent(eventData);
       }
 
       if (rsvpResponse.ok) {
-        const rsvpData = await rsvpResponse.json()
-        setRSVPs(rsvpData)
+        const data = await rsvpResponse.json();
+        setRSVPs(data.rsvps || []); // Handle the new response structure
       }
     } catch (error) {
-      toast.error("Failed to fetch event data")
+      toast.error("Failed to fetch event data");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "attending":
-        return <Badge className="bg-green-100 text-green-800">Attending</Badge>
-      case "not_attending":
-        return <Badge className="bg-red-100 text-red-800">Not Attending</Badge>
-      case "maybe":
-        return <Badge className="bg-yellow-100 text-yellow-800">Maybe</Badge>
-      default:
-        return <Badge variant="secondary">{status}</Badge>
-    }
-  }
+  const getStatusBadge = () => {
+    // Since RSVPs are binary now, all RSVPs mean "attending"
+    return <Badge className="bg-green-100 text-green-800">Attending</Badge>;
+  };
 
   const getStats = () => {
-    const attending = rsvps.filter((rsvp: any) => rsvp.status === "attending").length
-    const notAttending = rsvps.filter((rsvp: any) => rsvp.status === "not_attending").length
-    const maybe = rsvps.filter((rsvp: any) => rsvp.status === "maybe").length
+    // All RSVPs are attending since we have a binary system now
+    const attending = Array.isArray(rsvps) ? rsvps.length : 0;
+    const notAttending = 0; // No longer applicable
+    const maybe = 0; // No longer applicable
 
-    return { attending, notAttending, maybe, total: rsvps.length }
-  }
+    return { attending, notAttending, maybe, total: attending };
+  };
 
   const exportRSVPs = () => {
     const csvContent = [
-      ["Name", "Email", "Status", "RSVP Date"].join(","),
+      ["Name", "Email", "Status", "RSVP Date", "Ticket ID"].join(","),
       ...rsvps.map((rsvp: any) =>
-        [rsvp.user.name, rsvp.user.email, rsvp.status, new Date(rsvp.createdAt).toLocaleDateString()].join(","),
+        [
+          rsvp.user.name,
+          rsvp.user.email,
+          "Attending", // All RSVPs are attending now
+          new Date(rsvp.createdAt).toLocaleDateString(),
+          rsvp.ticketId || "",
+        ].join(",")
       ),
-    ].join("\n")
+    ].join("\n");
 
-    const blob = new Blob([csvContent], { type: "text/csv" })
-    const url = window.URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `${event?.title || "event"}-rsvps.csv`
-    a.click()
-    window.URL.revokeObjectURL(url)
-  }
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${event?.title || "event"}-rsvps.csv`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
 
   if (loading) {
     return (
@@ -93,10 +109,10 @@ export default function EventRSVPsPage({ params }: { params: Promise<{ id: strin
           <div className="h-64 bg-muted rounded"></div>
         </div>
       </div>
-    )
+    );
   }
 
-  const stats = getStats()
+  const stats = getStats();
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -119,7 +135,7 @@ export default function EventRSVPsPage({ params }: { params: Promise<{ id: strin
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <Card>
           <CardContent className="flex items-center p-6">
             <Users className="h-8 w-8 text-blue-600 mr-3" />
@@ -135,24 +151,6 @@ export default function EventRSVPsPage({ params }: { params: Promise<{ id: strin
             <div>
               <p className="text-2xl font-bold">{stats.attending}</p>
               <p className="text-sm text-muted-foreground">Attending</p>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="flex items-center p-6">
-            <UserX className="h-8 w-8 text-red-600 mr-3" />
-            <div>
-              <p className="text-2xl font-bold">{stats.notAttending}</p>
-              <p className="text-sm text-muted-foreground">Not Attending</p>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="flex items-center p-6">
-            <Clock className="h-8 w-8 text-yellow-600 mr-3" />
-            <div>
-              <p className="text-2xl font-bold">{stats.maybe}</p>
-              <p className="text-sm text-muted-foreground">Maybe</p>
             </div>
           </CardContent>
         </Card>
@@ -175,16 +173,22 @@ export default function EventRSVPsPage({ params }: { params: Promise<{ id: strin
                   <TableHead>Name</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Ticket ID</TableHead>
                   <TableHead>RSVP Date</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {rsvps.map((rsvp: any) => (
                   <TableRow key={rsvp._id}>
-                    <TableCell className="font-medium">{rsvp.user.name}</TableCell>
+                    <TableCell className="font-medium">
+                      {rsvp.user.name}
+                    </TableCell>
                     <TableCell>{rsvp.user.email}</TableCell>
-                    <TableCell>{getStatusBadge(rsvp.status)}</TableCell>
-                    <TableCell>{new Date(rsvp.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell>{getStatusBadge()}</TableCell>
+                    <TableCell>{rsvp.ticketId || "N/A"}</TableCell>
+                    <TableCell>
+                      {new Date(rsvp.createdAt).toLocaleDateString()}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -193,5 +197,5 @@ export default function EventRSVPsPage({ params }: { params: Promise<{ id: strin
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

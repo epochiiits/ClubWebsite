@@ -12,15 +12,18 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       .populate("event", "title date venue")
       .sort({ createdAt: -1 });
 
+    // Filter out RSVPs where event might be deleted
+    const validRsvps = rsvps.filter(rsvp => rsvp.event !== null);
+
     const stats = {
-      attending: rsvps.filter((r) => r.status === "attending").length,
-      notAttending: rsvps.filter((r) => r.status === "not_attending").length,
-      maybe: rsvps.filter((r) => r.status === "maybe").length,
-      total: rsvps.length,
+      attending: validRsvps.length, // All RSVPs are attending since RSVPs are binary now
+      notAttending: 0, // No longer applicable
+      maybe: 0, // No longer applicable
+      total: validRsvps.length,
     };
 
     return NextResponse.json({
-      rsvps,
+      rsvps: validRsvps,
       stats,
     });
   } catch (error) {

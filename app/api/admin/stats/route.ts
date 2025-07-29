@@ -28,7 +28,7 @@ export async function GET() {
       Project.countDocuments(),
       Event.countDocuments(),
       Event.countDocuments({ date: { $gte: new Date() } }),
-      RSVP.countDocuments({ status: "attending" }),
+      RSVP.countDocuments(), // Count all RSVPs since they're all attending now
       Gallery.countDocuments(),
       Podcast.countDocuments(),
       User.countDocuments(),
