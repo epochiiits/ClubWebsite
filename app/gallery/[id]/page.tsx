@@ -1,37 +1,40 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Calendar, ArrowLeft, Images } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import { notFound } from "next/navigation"
-
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Calendar, ArrowLeft, Images } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import GalleryImage from "@/components/GalleryImage";
 async function getGallery(id: string) {
   try {
-    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/gallery/${id}`, {
-      cache: "no-store",
-    })
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL}/api/gallery/${id}`,
+      {
+        cache: "no-store",
+      }
+    );
     if (!response.ok) {
-      if (response.status === 404) return null
-      throw new Error("Failed to fetch gallery")
+      if (response.status === 404) return null;
+      throw new Error("Failed to fetch gallery");
     }
-    return await response.json()
+    return await response.json();
   } catch (error) {
-    console.error("Error fetching gallery:", error)
-    return null
+    console.error("Error fetching gallery:", error);
+    return null;
   }
 }
 
 interface PageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }
 
 export default async function GalleryDetailPage({ params }: PageProps) {
-  const { id } = await params
-  const gallery = await getGallery(id)
+  const { id } = await params;
+  const gallery = await getGallery(id);
 
   if (!gallery) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -52,7 +55,9 @@ export default async function GalleryDetailPage({ params }: PageProps) {
               <div className="flex items-center gap-4 text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Calendar className="h-4 w-4" />
-                  <span>{new Date(gallery.eventDate).toLocaleDateString()}</span>
+                  <span>
+                    {new Date(gallery.eventDate).toLocaleDateString()}
+                  </span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Images className="h-4 w-4" />
@@ -80,7 +85,9 @@ export default async function GalleryDetailPage({ params }: PageProps) {
           <div className="space-y-8">
             <div className="text-center">
               <h2 className="text-2xl font-semibold mb-2">Event Photos</h2>
-              <p className="text-muted-foreground">Browse through {gallery.images.length} photos from this event</p>
+              <p className="text-muted-foreground">
+                Browse through {gallery.images.length} photos from this event
+              </p>
             </div>
 
             {/* Masonry Grid */}
@@ -88,23 +95,20 @@ export default async function GalleryDetailPage({ params }: PageProps) {
               {gallery.images.map((image: any, index: number) => (
                 <div key={index} className="break-inside-avoid">
                   <Card className="overflow-hidden group hover:shadow-lg transition-shadow duration-300">
-                    <div className="relative">
-                      <Image
-                        src={image.url || "/placeholder.svg?height=300&width=400&text=Image"}
-                        alt={image.caption || `Event photo ${index + 1}`}
-                        width={400}
-                        height={300}
-                        className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement
-                          target.src = "/placeholder.svg?height=300&width=400&text=Image+Not+Found"
-                        }}
-                      />
-                    </div>
+                    <GalleryImage
+                      src={
+                        image.url ||
+                        "/placeholder.svg?height=300&width=400&text=Image"
+                      }
+                      alt={image.caption || `Event photo ${index + 1}`}
+                      aspect="aspect-[4/3]"
+                      className="group-hover:scale-105 transition-transform duration-300"
+                    />
                     {image.caption && (
                       <CardContent className="p-4">
-                        <p className="text-sm text-muted-foreground leading-relaxed">{image.caption}</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          {image.caption}
+                        </p>
                       </CardContent>
                     )}
                   </Card>
@@ -117,20 +121,34 @@ export default async function GalleryDetailPage({ params }: PageProps) {
               <CardContent className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
                   <div>
-                    <div className="text-2xl font-bold text-primary mb-1">{gallery.images.length}</div>
-                    <div className="text-sm text-muted-foreground">Total Photos</div>
+                    <div className="text-2xl font-bold text-primary mb-1">
+                      {gallery.images.length}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Total Photos
+                    </div>
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-primary mb-1">
-                      {new Date(gallery.eventDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                      {new Date(gallery.eventDate).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })}
                     </div>
-                    <div className="text-sm text-muted-foreground">Event Date</div>
+                    <div className="text-sm text-muted-foreground">
+                      Event Date
+                    </div>
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-primary mb-1">
-                      {new Date(gallery.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                      {new Date(gallery.createdAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })}
                     </div>
-                    <div className="text-sm text-muted-foreground">Gallery Created</div>
+                    <div className="text-sm text-muted-foreground">
+                      Gallery Created
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -140,12 +158,16 @@ export default async function GalleryDetailPage({ params }: PageProps) {
           <Card>
             <CardContent className="p-12 text-center">
               <Images className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No photos available</h3>
-              <p className="text-muted-foreground">This gallery doesn't have any photos yet.</p>
+              <h3 className="text-lg font-semibold mb-2">
+                No photos available
+              </h3>
+              <p className="text-muted-foreground">
+                This gallery doesn't have any photos yet.
+              </p>
             </CardContent>
           </Card>
         )}
       </div>
     </div>
-  )
+  );
 }
