@@ -2,12 +2,15 @@ import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { v4 as uuidv4 } from "uuid"
 
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 export function generateTicketId(): string {
-  return `TICKET-${uuidv4().substring(0, 8).toUpperCase()}`
+  const timestamp = Date.now().toString(36)
+  const randomStr = Math.random().toString(36).substring(2, 8)
+  return `TKT-${timestamp}-${randomStr}`.toUpperCase()
 }
 
 export function extractYouTubeId(url: string): string | null {

@@ -44,22 +44,21 @@ export async function POST(request: NextRequest) {
     })
 
     if (existingRSVP) {
-      // Update existing RSVP
-      existingRSVP.status = validatedData.status
-      await existingRSVP.save()
+      return NextResponse.json({ error: "You have already RSVP'd for this event" }, { status: 400 })
+    }
 
-      const populatedRSVP = await RSVP.findById(existingRSVP._id)
-        .populate("event", "title date venue")
-        .populate("user", "name email")
-
-      return NextResponse.json(populatedRSVP)
+    // Check max attendees limit
+    if (event.maxAttendees) {
+      const currentRSVPCount = await RSVP.countDocuments({ event: validatedData.eventId })
+      if (currentRSVPCount >= event.maxAttendees) {
+        return NextResponse.json({ error: "Event is full" }, { status: 400 })
+      }
     }
 
     // Create new RSVP
     const rsvp = await RSVP.create({
       event: validatedData.eventId,
       user: user._id,
-      status: validatedData.status,
       ticketId: generateTicketId(),
     })
 

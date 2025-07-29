@@ -1,19 +1,41 @@
-import PDFDocument from "pdfkit"
-import QRCode from "qrcode"
+import PDFDocument from "pdfkit";
+import QRCode from "qrcode";
+import path from "path";
+import fs from "fs";
 
 interface TicketData {
-  eventTitle: string
-  eventDate: string
-  eventVenue: string
-  attendeeName: string
-  attendeeEmail: string
-  ticketId: string
+  eventTitle: string;
+  eventDate: Date;
+  eventVenue: string;
+  attendeeName: string;
+  attendeeEmail: string;
+  ticketId: string;
 }
 
 export async function generateTicketPDF(ticketData: TicketData): Promise<Buffer> {
   return new Promise<Buffer>(async (resolve, reject) => {
     try {
-      // Create PDF without specifying fonts to avoid font file issues
+      // Validate input
+      if (!ticketData.eventTitle || !ticketData.eventVenue || !ticketData.attendeeName || !ticketData.attendeeEmail || !ticketData.ticketId) {
+        throw new Error("Missing required ticket data");
+      }
+      if (isNaN(ticketData.eventDate.getTime())) {
+        throw new Error("Invalid event date");
+      }
+
+      // Load font paths
+      const regularFontPath = path.resolve(process.cwd(), "fonts", "Inter-Regular.ttf");
+      const boldFontPath = path.resolve(process.cwd(), "fonts", "Inter-Bold.ttf");
+
+      // Log font paths for debugging
+      console.log("Regular font path:", regularFontPath, fs.existsSync(regularFontPath));
+      console.log("Bold font path:", boldFontPath, fs.existsSync(boldFontPath));
+
+      // Set font variables with fallback
+      let font = fs.existsSync(regularFontPath) ? regularFontPath : "Times-Roman";
+      let boldFont = fs.existsSync(boldFontPath) ? boldFontPath : "Times-Bold";
+
+      // Create PDF document
       const doc = new PDFDocument({
         size: "A4",
         margin: 50,
@@ -22,53 +44,60 @@ export async function generateTicketPDF(ticketData: TicketData): Promise<Buffer>
           Author: "TechClub",
           Subject: "Event Ticket",
         },
-      })
-      const chunks: Buffer[] = []
+      });
 
-      doc.on("data", (chunk) => chunks.push(chunk))
-      doc.on("end", () => resolve(Buffer.concat(chunks)))
-      doc.on("error", reject)
+      // Set font immediately
+      doc.font(font);
+
+      const chunks: Buffer[] = [];
+      doc.on("data", (chunk) => chunks.push(chunk));
+      doc.on("end", () => resolve(Buffer.concat(chunks)));
+      doc.on("error", reject);
 
       // Header with background
-      doc.rect(0, 0, doc.page.width, 80).fill("#2563eb")
-
-      // Title in white
-      doc.fillColor("white").fontSize(24).text("TechClub Event Ticket", 50, 25, { align: "center" })
+      doc.rect(0, 0, doc.page.width, 80).fill("#2563eb");
+      doc.fillColor("white").font(boldFont).fontSize(24).text("TechClub Event Ticket", 50, 25, { align: "center" });
 
       // Reset color and move down
-      doc.fillColor("black")
-      doc.y = 120
+      doc.fillColor("black").font(font);
+      doc.y = 120;
 
       // Event details box
-      doc.rect(50, 120, 495, 180).fillAndStroke("#f8fafc", "#e2e8f0")
+      doc.rect(50, 120, 495, 180).fillAndStroke("#f8fafc", "#e2e8f0");
+      doc.font(boldFont).fontSize(18).text(ticketData.eventTitle, 70, 140, { width: 455, align: "center" });
 
-      doc.fontSize(18).text(ticketData.eventTitle, 70, 140, { width: 455, align: "center" })
-
-      doc
-        .fontSize(12)
-        .text(`Date: ${ticketData.eventDate}`, 70, 180)
+      doc.font(font).fontSize(12)
+        .text(
+          `Date: ${ticketData.eventDate.toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}`,
+          70,
+          180
+        )
         .text(`Venue: ${ticketData.eventVenue}`, 70, 200)
-        .text(`Time: Please check event details`, 70, 220)
+        .text(`Time: Please check event details`, 70, 220);
 
       // Attendee details box
-      doc.rect(50, 320, 495, 100).fillAndStroke("#fef3c7", "#f59e0b")
+      doc.rect(50, 320, 495, 100).fillAndStroke("#fef3c7", "#f59e0b");
+      doc.fillColor("#92400e").font(boldFont).fontSize(14).text("Attendee Information", 70, 340);
 
-      doc
-        .fillColor("#92400e")
-        .fontSize(14)
-        .text("Attendee Information", 70, 340)
-        .fontSize(11)
+      doc.font(font).fontSize(11)
         .text(`Name: ${ticketData.attendeeName}`, 70, 365)
-        .text(`Email: ${ticketData.attendeeEmail}`, 70, 385)
+        .text(`Email: ${ticketData.attendeeEmail}`, 70, 385);
 
-      // QR Code section
+      // QR Code
       try {
         const qrCodeData = JSON.stringify({
           ticketId: ticketData.ticketId,
           event: ticketData.eventTitle,
           attendee: ticketData.attendeeName,
           date: ticketData.eventDate,
-        })
+        });
 
         const qrCodeBuffer = await QRCode.toBuffer(qrCodeData, {
           width: 100,
@@ -77,49 +106,35 @@ export async function generateTicketPDF(ticketData: TicketData): Promise<Buffer>
             dark: "#000000",
             light: "#ffffff",
           },
-        })
+        });
 
-        doc.image(qrCodeBuffer, 450, 450, { width: 100, height: 100 })
-
-        doc.fillColor("#6b7280").fontSize(9).text("Scan for verification", 450, 560, { width: 100, align: "center" })
+        doc.image(qrCodeBuffer, 450, 450, { width: 100, height: 100 });
+        doc.fillColor("#6b7280").font(font).fontSize(9).text("Scan for verification", 450, 560, { width: 100, align: "center" });
       } catch (qrError) {
-        console.warn("QR code generation failed:", qrError)
-        doc
-          .fillColor("#6b7280")
-          .fontSize(10)
-          .text(`Ticket ID: ${ticketData.ticketId}`, 450, 500, { width: 100, align: "center" })
+        console.warn("QR code generation failed:", qrError);
+        doc.fillColor("#6b7280").font(font).fontSize(10)
+          .text(`Ticket ID: ${ticketData.ticketId}`, 450, 500, { width: 100, align: "center" });
       }
 
       // Instructions
-      doc
-        .fillColor("#374151")
-        .fontSize(10)
-        .text("Instructions:", 70, 480)
-        .fontSize(9)
+      doc.fillColor("#374151").font(boldFont).fontSize(10).text("Instructions:", 70, 480);
+      doc.font(font).fontSize(9)
         .text("• Please arrive 15 minutes before the event", 70, 500)
         .text("• Bring a valid ID for verification", 70, 515)
-        .text("• This ticket is non-transferable", 70, 530)
+        .text("• This ticket is non-transferable", 70, 530);
 
       // Footer
-      doc
-        .fillColor("#9ca3af")
-        .fontSize(8)
-        .text("Generated by TechClub Management System", 50, 650, {
-          width: 495,
-          align: "center",
-        })
-        .text(`Generated on: ${new Date().toLocaleString()}`, 50, 665, {
-          width: 495,
-          align: "center",
-        })
+      doc.fillColor("#9ca3af").font(font).fontSize(8)
+        .text("Generated by TechClub Management System", 50, 650, { width: 495, align: "center" })
+        .text(`Generated on: ${new Date().toLocaleString()}`, 50, 665, { width: 495, align: "center" });
 
       // Ticket border
-      doc.rect(40, 40, 515, 650).stroke("#2563eb")
+      doc.rect(40, 40, 515, 650).stroke("#2563eb");
 
-      doc.end()
+      doc.end();
     } catch (error) {
-      console.error("PDF generation error:", error)
-      reject(error)
+      console.error("PDF generation error:", error);
+      reject(error);
     }
-  })
+  });
 }

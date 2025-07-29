@@ -16,7 +16,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
     await connectDB()
 
-    const rsvp = await RSVP.findById(id).populate("event", "title date venue").populate("user", "name email")
+    const rsvp = await RSVP.findById(id)
+      .populate("event", "title date venue")
+      .populate("user", "name email")
 
     if (!rsvp) {
       return NextResponse.json({ error: "RSVP not found" }, { status: 404 })
@@ -26,21 +28,29 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     if (rsvp.user.email !== session.user.email && session.user.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
+console.log("Generating ticket for RSVP:", {
+  eventTitle: rsvp.event?.title,
+  eventDate: rsvp.event?.date,
+  eventVenue: rsvp.event?.venue,
+  attendeeName: rsvp.user?.name,
+  attendeeEmail: rsvp.user?.email,
+  ticketId: rsvp.ticketId,
+})
 
     try {
       const pdfBuffer = await generateTicketPDF({
         eventTitle: rsvp.event.title,
-        eventDate: new Date(rsvp.event.date).toLocaleDateString(),
+        eventDate: new Date(rsvp.event.date),
         eventVenue: rsvp.event.venue,
         attendeeName: rsvp.user.name,
         attendeeEmail: rsvp.user.email,
-        ticketId: rsvp._id.toString(),
+        ticketId: rsvp.ticketId,
       })
 
       return new NextResponse(pdfBuffer, {
         headers: {
           "Content-Type": "application/pdf",
-          "Content-Disposition": `attachment; filename="ticket-${rsvp.event.title.replace(/\s+/g, "-")}.pdf"`,
+          "Content-Disposition": `attachment; filename="ticket-${rsvp.ticketId}.pdf"`,
         },
       })
     } catch (pdfError) {

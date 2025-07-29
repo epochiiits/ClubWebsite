@@ -67,7 +67,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
     }
   }
 
-  const handleRsvp = async (status: "attending" | "not_attending" | "maybe") => {
+  const handleRsvp = async () => {
     if (!session) {
       toast.error("Please sign in to RSVP")
       return
@@ -82,7 +82,6 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
         },
         body: JSON.stringify({
           eventId: eventId,
-          status,
         }),
       })
 
@@ -93,7 +92,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
 
       const newRsvp = await response.json()
       setRsvp(newRsvp)
-      toast.success(`RSVP updated to ${status.replace("_", " ")}`)
+      toast.success("RSVP successful! You can now download your ticket.")
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to RSVP")
     } finally {
@@ -102,7 +101,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
   }
 
   const downloadTicket = async () => {
-    if (!rsvp || rsvp.status !== "attending") return
+    if (!rsvp) return
 
     try {
       const response = await fetch(`/api/rsvp/${rsvp._id}/ticket`)
@@ -220,55 +219,31 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
             </CardContent>
           </Card>
 
-          {/* RSVP Section */}
+          {/* RSVP/Ticket Section */}
           {session && canRsvp && (
             <Card>
               <CardHeader>
-                <CardTitle>RSVP</CardTitle>
-                <CardDescription>Let us know if you're planning to attend</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button
-                  onClick={() => handleRsvp("attending")}
-                  disabled={rsvpLoading}
-                  variant={rsvp?.status === "attending" ? "default" : "outline"}
-                  className="w-full"
-                >
-                  ✓ Attending
-                </Button>
-                <Button
-                  onClick={() => handleRsvp("maybe")}
-                  disabled={rsvpLoading}
-                  variant={rsvp?.status === "maybe" ? "default" : "outline"}
-                  className="w-full"
-                >
-                  ? Maybe
-                </Button>
-                <Button
-                  onClick={() => handleRsvp("not_attending")}
-                  disabled={rsvpLoading}
-                  variant={rsvp?.status === "not_attending" ? "default" : "outline"}
-                  className="w-full"
-                >
-                  ✗ Not Attending
-                </Button>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Ticket Download */}
-          {rsvp?.status === "attending" && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Your Ticket</CardTitle>
-                <CardDescription>Download your event ticket</CardDescription>
+                <CardTitle>{rsvp ? "Your Ticket" : "RSVP"}</CardTitle>
+                <CardDescription>
+                  {rsvp ? "Download your event ticket" : "Reserve your spot for this event"}
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button onClick={downloadTicket} className="w-full">
-                  <Download className="mr-2 h-4 w-4" />
-                  Download Ticket
-                </Button>
-                <p className="text-xs text-muted-foreground mt-2">Ticket ID: {rsvp.ticketId}</p>
+                {rsvp ? (
+                  <div className="space-y-3">
+                    <Button onClick={downloadTicket} className="w-full">
+                      <Download className="mr-2 h-4 w-4" />
+                      Download Ticket
+                    </Button>
+                    <p className="text-xs text-muted-foreground text-center">
+                      Ticket ID: {rsvp.ticketId}
+                    </p>
+                  </div>
+                ) : (
+                  <Button onClick={handleRsvp} disabled={rsvpLoading} className="w-full">
+                    {rsvpLoading ? "Processing..." : "RSVP for Event"}
+                  </Button>
+                )}
               </CardContent>
             </Card>
           )}

@@ -26,8 +26,9 @@ export const eventSchema = z.object({
   description: z.string().min(1, "Description is required"),
   date: z.string().min(1, "Date is required"),
   venue: z.string().min(1, "Venue is required"),
-  maxAttendees: z.number().min(1, "Max attendees must be at least 1"),
-  image: z.string().url().optional().or(z.literal("")),
+  image: z.string().optional(),
+  maxAttendees: z.number().positive().optional(),
+  rsvpDeadline: z.string().optional(),
 })
 
 export const podcastSchema = z.object({
