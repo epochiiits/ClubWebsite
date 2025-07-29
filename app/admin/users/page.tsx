@@ -13,7 +13,7 @@ interface User {
   _id: string
   name: string
   email: string
-  role: "admin" | "member"
+  role: "admin" | "user"
   createdAt: string
   lastLogin?: string
 }
@@ -49,7 +49,7 @@ export default function UsersPage() {
     }
   }
 
-  const updateUserRole = async (userId: string, newRole: "admin" | "member") => {
+  const updateUserRole = async (userId: string, newRole: "admin" | "user") => {
     try {
       const response = await fetch(`/api/admin/users/${userId}`, {
         method: "PATCH",
@@ -166,7 +166,7 @@ export default function UsersPage() {
               <SelectContent>
                 <SelectItem value="all">All Roles</SelectItem>
                 <SelectItem value="admin">Admin</SelectItem>
-                <SelectItem value="member">Member</SelectItem>
+                <SelectItem value="user">User</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -197,13 +197,13 @@ export default function UsersPage() {
                     <TableCell>
                       <Select
                         value={user.role}
-                        onValueChange={(value: "admin" | "member") => updateUserRole(user._id, value)}
+                        onValueChange={(value: "admin" | "user") => updateUserRole(user._id, value)}
                       >
                         <SelectTrigger className="w-24">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="member">Member</SelectItem>
+                          <SelectItem value="user">User</SelectItem>
                           <SelectItem value="admin">Admin</SelectItem>
                         </SelectContent>
                       </Select>

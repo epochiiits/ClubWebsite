@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     const stats = {
       total: users.length,
       admins: users.filter((user) => user.role === "admin").length,
-      members: users.filter((user) => user.role === "member").length,
+      members: users.filter((user) => user.role === "user").length,
       activeThisMonth: users.filter((user) => {
         if (!user.lastLogin) return false
         const lastMonth = new Date()

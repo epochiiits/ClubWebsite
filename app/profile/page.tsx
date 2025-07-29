@@ -115,7 +115,7 @@ export default function ProfilePage() {
                 <h3 className="text-xl font-semibold">{session.user.name || "User"}</h3>
                 <div className="flex items-center gap-2">
                   <Badge variant={session.user.role === "admin" ? "default" : "secondary"}>
-                    {session.user.role === "admin" ? "Admin" : "Member"}
+                    {session.user.role === "admin" ? "Admin" : "user"}
                   </Badge>
                   {session.user.role === "admin" && (
                     <Badge variant="outline">
