@@ -32,8 +32,15 @@ export async function generateTicketPDF(ticketData: TicketData): Promise<Buffer>
       console.log("Bold font path:", boldFontPath, fs.existsSync(boldFontPath));
 
       // Set font variables with fallback
-      let font = fs.existsSync(regularFontPath) ? regularFontPath : "Times-Roman";
-      let boldFont = fs.existsSync(boldFontPath) ? boldFontPath : "Times-Bold";
+      const useCustomFont = fs.existsSync(regularFontPath) && fs.existsSync(boldFontPath);
+
+      const font = useCustomFont ? regularFontPath : "Courier";
+      const boldFont = useCustomFont ? boldFontPath : "Courier-Bold";
+
+      console.log("Using font:", font);
+      console.log("Using bold font:", boldFont);
+
+
 
       // Create PDF document
       const doc = new PDFDocument({
@@ -44,6 +51,7 @@ export async function generateTicketPDF(ticketData: TicketData): Promise<Buffer>
           Author: "TechClub",
           Subject: "Event Ticket",
         },
+        font: false,  // <--- disable default font loading (prevents Helvetica.afm error)
       });
 
       // Set font immediately
