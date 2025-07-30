@@ -27,7 +27,7 @@ async function getBlogs(searchParams: Promise<{ page?: string; search?: string }
 }
 
 export const metadata = {
-  title: "Blog - TechClub",
+  title: "Blog - Epoch",
   description: "Read our latest articles about technology, programming, and industry insights",
 }
 
@@ -49,7 +49,7 @@ export default async function BlogPage({
       </div>
 
       {/* Search */}
-      <div className="max-w-md mx-auto mb-8">
+      {/* <div className="max-w-md mx-auto mb-8">
         <form className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
@@ -62,7 +62,7 @@ export default async function BlogPage({
             Search
           </Button>
         </form>
-      </div>
+      </div> */}
 
       {/* Blog Grid */}
       {blogs.length > 0 ? (

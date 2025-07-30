@@ -22,7 +22,7 @@ export function Footer() {
         <div className="mt-8 md:order-1 md:mt-0">
           <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8">
             <p className="text-center text-xs leading-5 text-muted-foreground">
-              &copy; 2024 TechClub. All rights reserved.
+              &copy; 2025 Epoch. All rights reserved.
             </p>
             <div className="flex space-x-6">
               <Link href="/about" className="text-xs text-muted-foreground hover:text-foreground">
@@ -31,9 +31,9 @@ export function Footer() {
               <Link href="/contact" className="text-xs text-muted-foreground hover:text-foreground">
                 Contact
               </Link>
-              <Link href="/privacy" className="text-xs text-muted-foreground hover:text-foreground">
+              {/* <Link href="*" className="text-xs text-muted-foreground hover:text-foreground">
                 Privacy
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>

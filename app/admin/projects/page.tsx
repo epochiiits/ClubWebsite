@@ -191,9 +191,9 @@ export default function AdminProjectsPage() {
                           <Edit className="h-4 w-4" />
                         </Link>
                       </Button>
-                      <Button size="sm" variant="outline" onClick={() => toggleFeatured(project._id, project.featured)}>
+                      {/* <Button size="sm" variant="outline" onClick={() => toggleFeatured(project._id, project.featured)}>
                         {project.featured ? "Unfeature" : "Feature"}
-                      </Button>
+                      </Button> */}
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button size="sm" variant="outline">

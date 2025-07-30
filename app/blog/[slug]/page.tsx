@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
-    title: `${blog.title} - TechClub`,
+    title: `${blog.title} - Epoch`,
     description: blog.excerpt,
     openGraph: {
       title: blog.title,
@@ -133,7 +133,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 <div>
                   <h3 className="font-semibold text-lg">{blog.author.name}</h3>
                   <p className="text-muted-foreground">
-                    {blog.author.bio || "Tech enthusiast and contributor to TechClub"}
+                    {blog.author.bio || "Tech enthusiast and contributor to Epoch"}
                   </p>
                 </div>
               </div>

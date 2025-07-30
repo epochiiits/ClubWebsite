@@ -32,10 +32,10 @@ export default async function HomePage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
-              Welcome to <span className="text-primary">TechClub</span>
+              Welcome to <span className="text-primary">Epoch</span>
             </h1>
             <p className="mt-6 text-lg leading-8 text-muted-foreground">
-              Join our community of passionate developers, designers, and tech enthusiasts. Learn, build, and grow
+              Join our community of passionate developers, and tech enthusiasts. Learn, build, and grow
               together through workshops, projects, and networking events.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
@@ -249,7 +249,7 @@ export default async function HomePage() {
               <Button size="lg" variant="secondary" asChild>
                 <Link href="/events">Join Next Event</Link>
               </Button>
-              <Button size="lg" variant="outline" asChild>
+              <Button size="lg" variant="secondary" asChild>
                 <Link
                   href="/contact"
                   className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary"

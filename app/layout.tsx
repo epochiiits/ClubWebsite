@@ -10,8 +10,8 @@ import { Toaster } from "@/components/ui/sonner"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Tech Club - Innovation & Learning",
-  description: "Join our tech club for workshops, projects, and networking opportunities",
+  title: "Epoch - Innovation & Learning",
+  description: "Join Epoch for workshops, projects, and networking opportunities",
   keywords: ["tech club", "programming", "workshops", "events", "projects"],
     generator: 'v0.dev'
 }

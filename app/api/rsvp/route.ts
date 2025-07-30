@@ -6,10 +6,11 @@ import User from "@/models/User"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
 import { generateTicketId } from "@/lib/utils"
+import { type Session } from "next-auth"
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = (await getServerSession(authOptions)) as Session | null
 
     if (!session?.user?.email) {
       return NextResponse.json({ error: "Authentication required" }, { status: 401 })
@@ -74,7 +75,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = (await getServerSession(authOptions)) as Session | null
 
     if (!session?.user?.email) {
       return NextResponse.json({ error: "Authentication required" }, { status: 401 })

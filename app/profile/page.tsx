@@ -146,12 +146,12 @@ export default function ProfilePage() {
 
         {/* Edit Profile */}
         <Card>
-          <CardHeader>
+          {/* <CardHeader>
             <CardTitle>Edit Profile</CardTitle>
             <CardDescription>Update your personal information</CardDescription>
-          </CardHeader>
+          </CardHeader> */}
           <CardContent>
-            <form onSubmit={handleUpdateProfile} className="space-y-4">
+            <form onSubmit={handleUpdateProfile} className="space-y-4 mt-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
                 <Input
@@ -159,19 +159,20 @@ export default function ProfilePage() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Enter your name"
-                  disabled={loading}
+                  disabled className="bg-muted"
+                  // disabled={loading}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input id="email" type="email" value={formData.email} disabled className="bg-muted" />
-                <p className="text-xs text-muted-foreground">
+                {/* <p className="text-xs text-muted-foreground">
                   Email cannot be changed. Contact support if you need to update your email.
-                </p>
+                </p> */}
               </div>
-              <Button type="submit" disabled={loading}>
+              {/* <Button type="submit" disabled={loading}>
                 {loading ? "Updating..." : "Update Profile"}
-              </Button>
+              </Button> */}
             </form>
           </CardContent>
         </Card>

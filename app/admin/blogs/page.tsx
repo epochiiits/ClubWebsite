@@ -171,9 +171,9 @@ export default function AdminBlogsPage() {
                           <Edit className="h-4 w-4" />
                         </Link>
                       </Button>
-                      <Button size="sm" variant="outline" onClick={() => togglePublished(blog._id, blog.published)}>
+                      {/* <Button size="sm" variant="outline" onClick={() => togglePublished(blog._id, blog.published)}>
                         {blog.published ? "Unpublish" : "Publish"}
-                      </Button>
+                      </Button> */}
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button size="sm" variant="outline">

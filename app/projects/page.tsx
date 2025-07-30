@@ -17,7 +17,7 @@ async function getProjects() {
 }
 
 export const metadata = {
-  title: "Projects - TechClub",
+  title: "Projects - Epoch",
   description: "Explore amazing projects built by our community members",
 }
 

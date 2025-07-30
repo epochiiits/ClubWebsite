@@ -17,7 +17,7 @@ async function getEvents() {
 }
 
 export const metadata = {
-  title: "Events - TechClub",
+  title: "Events - Epoch",
   description: "Join our upcoming tech events, workshops, and networking sessions",
 }
 

@@ -14,7 +14,7 @@ async function getPodcasts() {
 }
 
 export const metadata = {
-  title: "Podcast - TechClub",
+  title: "Podcast - Epoch",
   description: "Watch our latest tech talks, interviews, and educational content",
 }
 

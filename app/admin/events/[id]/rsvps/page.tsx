@@ -145,7 +145,7 @@ export default function EventRSVPsPage({
             </div>
           </CardContent>
         </Card>
-        <Card>
+        {/* <Card>
           <CardContent className="flex items-center p-6">
             <UserCheck className="h-8 w-8 text-green-600 mr-3" />
             <div>
@@ -153,7 +153,7 @@ export default function EventRSVPsPage({
               <p className="text-sm text-muted-foreground">Attending</p>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       <Card>
@@ -172,7 +172,7 @@ export default function EventRSVPsPage({
                 <TableRow>
                   <TableHead>Name</TableHead>
                   <TableHead>Email</TableHead>
-                  <TableHead>Status</TableHead>
+                  {/* <TableHead>Status</TableHead> */}
                   <TableHead>Ticket ID</TableHead>
                   <TableHead>RSVP Date</TableHead>
                 </TableRow>
@@ -184,7 +184,7 @@ export default function EventRSVPsPage({
                       {rsvp.user.name}
                     </TableCell>
                     <TableCell>{rsvp.user.email}</TableCell>
-                    <TableCell>{getStatusBadge()}</TableCell>
+                    {/* <TableCell>{getStatusBadge()}</TableCell> */}
                     <TableCell>{rsvp.ticketId || "N/A"}</TableCell>
                     <TableCell>
                       {new Date(rsvp.createdAt).toLocaleDateString()}

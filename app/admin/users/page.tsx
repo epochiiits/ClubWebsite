@@ -93,7 +93,7 @@ export default function UsersPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div>
         <h1 className="text-3xl font-bold">User Management</h1>
         <p className="text-muted-foreground">Manage user accounts and permissions</p>
@@ -131,7 +131,7 @@ export default function UsersPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        {/* <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active This Month</CardTitle>
             <UserX className="h-4 w-4 text-muted-foreground" />
@@ -139,7 +139,7 @@ export default function UsersPage() {
           <CardContent>
             <div className="text-2xl font-bold">{stats.activeThisMonth}</div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       {/* Filters */}
@@ -180,7 +180,7 @@ export default function UsersPage() {
                   <TableHead>Email</TableHead>
                   <TableHead>Role</TableHead>
                   <TableHead>Joined</TableHead>
-                  <TableHead>Last Login</TableHead>
+                  {/* <TableHead>Last Login</TableHead> */}
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -193,7 +193,7 @@ export default function UsersPage() {
                       <Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge>
                     </TableCell>
                     <TableCell>{new Date(user.createdAt).toLocaleDateString()}</TableCell>
-                    <TableCell>{user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : "Never"}</TableCell>
+                    {/* <TableCell>{user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : "Never"}</TableCell> */}
                     <TableCell>
                       <Select
                         value={user.role}

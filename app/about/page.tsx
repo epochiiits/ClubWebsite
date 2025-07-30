@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge"
 import { Users, Target, Heart, Zap } from "lucide-react"
 
 export const metadata = {
-  title: "About Us - TechClub",
-  description: "Learn about our mission, vision, and the team behind TechClub",
+  title: "About Us - Epoch",
+  description: "Learn about our mission, vision, and the team behind Epoch",
 }
 
 export default function AboutPage() {
@@ -63,7 +63,7 @@ export default function AboutPage() {
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       {/* Hero Section */}
       <div className="text-center mb-16">
-        <h1 className="text-4xl font-bold mb-6">About TechClub</h1>
+        <h1 className="text-4xl font-bold mb-6">About Epoch</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           We're a community of passionate developers, designers, and tech enthusiasts dedicated to learning, building,
           and growing together in the ever-evolving world of technology.
@@ -200,7 +200,7 @@ export default function AboutPage() {
         <CardContent>
           <div className="space-y-4 text-muted-foreground">
             <p>
-              TechClub was founded in 2020 by a group of computer science students who wanted to create a more
+              Epoch was founded in 2020 by a group of computer science students who wanted to create a more
               collaborative and practical learning environment. What started as informal study sessions quickly grew
               into a thriving community of over 500 members.
             </p>
@@ -210,7 +210,7 @@ export default function AboutPage() {
               tech companies, start their own ventures, and contribute to open-source projects worldwide.
             </p>
             <p>
-              Today, TechClub continues to evolve, embracing new technologies and adapting to the changing needs of our
+              Today, Epoch continues to evolve, embracing new technologies and adapting to the changing needs of our
               community. We're proud of our journey and excited about the future we're building together.
             </p>
           </div>

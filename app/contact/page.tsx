@@ -171,7 +171,7 @@ export default function ContactPage() {
         </div>
       </div>
 
-      {/* Map Section */}
+      {/* 
       <Card className="mt-8">
         <CardHeader>
           <CardTitle>Find Us</CardTitle>
@@ -186,7 +186,7 @@ export default function ContactPage() {
             </p>
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   )
 }
