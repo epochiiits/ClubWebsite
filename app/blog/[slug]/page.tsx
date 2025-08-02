@@ -4,6 +4,7 @@ import { ArrowLeft, Calendar, User, Tag } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { AuthWrapper } from "@/components/auth-wrapper"
 
 async function getBlog(slug: string) {
   try {
@@ -55,6 +56,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   }
 
   return (
+    <AuthWrapper>
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <Button variant="ghost" asChild className="mb-6">
         <Link href="/blog">
@@ -142,5 +144,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         )}
       </article>
     </div>
+    </AuthWrapper>
   )
 }
