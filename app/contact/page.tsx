@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
-import { Mail, MapPin, Phone, Clock } from "lucide-react"
+import { Mail, MapPin, Phone, Clock, Instagram } from "lucide-react"
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -51,19 +51,19 @@ export default function ContactPage() {
                 <Mail className="h-5 w-5 text-primary mt-1" />
                 <div>
                   <p className="font-medium">Email</p>
-                  <p className="text-sm text-muted-foreground">hello@techclub.com</p>
+                  <p className="text-sm text-muted-foreground">aiml.club@iiits.in</p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-3">
-                <Phone className="h-5 w-5 text-primary mt-1" />
+                <Instagram className="h-5 w-5 text-primary mt-1" />
                 <div>
-                  <p className="font-medium">Phone</p>
-                  <p className="text-sm text-muted-foreground">+1 (555) 123-4567</p>
+                  <p className="font-medium">Instagram</p>
+                  <p className="text-sm text-muted-foreground">epoch.iiits</p>
                 </div>
               </div>
 
-              <div className="flex items-start space-x-3">
+              {/* <div className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 text-primary mt-1" />
                 <div>
                   <p className="font-medium">Address</p>
@@ -75,9 +75,9 @@ export default function ContactPage() {
                     San Francisco, CA 94105
                   </p>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="flex items-start space-x-3">
+              {/* <div className="flex items-start space-x-3">
                 <Clock className="h-5 w-5 text-primary mt-1" />
                 <div>
                   <p className="font-medium">Office Hours</p>
@@ -89,7 +89,7 @@ export default function ContactPage() {
                     Sunday: Closed
                   </p>
                 </div>
-              </div>
+              </div> */}
             </CardContent>
           </Card>
 
