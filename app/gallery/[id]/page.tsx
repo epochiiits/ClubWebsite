@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import GalleryImage from "@/components/GalleryImage";
+import { AuthWrapper } from "@/components/auth-wrapper";
 async function getGallery(id: string) {
   try {
     const response = await fetch(
@@ -38,6 +39,7 @@ export default async function GalleryDetailPage({ params }: PageProps) {
   }
 
   return (
+    <AuthWrapper>
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
@@ -169,5 +171,6 @@ export default async function GalleryDetailPage({ params }: PageProps) {
         )}
       </div>
     </div>
+    </AuthWrapper>
   );
 }
