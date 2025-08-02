@@ -4,6 +4,7 @@ import { Calendar, Images } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import GalleryImage from "@/components/GalleryImage";
+import { AuthWrapper } from "@/components/auth-wrapper";
 
 async function getGalleries() {
   try {
@@ -22,6 +23,7 @@ export default async function GalleryPage() {
   const galleries = await getGalleries();
 
   return (
+    <AuthWrapper>
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
@@ -99,5 +101,6 @@ export default async function GalleryPage() {
         )}
       </div>
     </div>
+    </AuthWrapper>
   );
 }
