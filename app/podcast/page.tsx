@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { AuthWrapper } from "@/components/auth-wrapper"
 
 async function getPodcasts() {
   try {
@@ -22,6 +23,7 @@ export default async function PodcastPage() {
   const podcasts = await getPodcasts()
 
   return (
+    <AuthWrapper>
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">Podcast</h1>
@@ -63,5 +65,6 @@ export default async function PodcastPage() {
         </div>
       )}
     </div>
+    </AuthWrapper>
   )
 }
