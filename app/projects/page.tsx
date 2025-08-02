@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Github, ExternalLink } from "lucide-react"
+import { AuthWrapper } from "@/components/auth-wrapper"
 
 async function getProjects() {
   try {
@@ -25,6 +26,7 @@ export default async function ProjectsPage() {
   const projects = await getProjects()
 
   return (
+    <AuthWrapper>
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">Our Projects</h1>
@@ -92,5 +94,6 @@ export default async function ProjectsPage() {
         </div>
       )}
     </div>
+    </AuthWrapper>
   )
 }
