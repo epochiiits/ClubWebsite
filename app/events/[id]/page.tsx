@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Calendar, MapPin, Users, Clock, ArrowLeft, Download } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
+import { AuthWrapper } from "@/components/auth-wrapper"
 
 export default function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { data: session } = useSession()
@@ -142,6 +143,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
   const canRsvp = isUpcoming && (!event.rsvpDeadline || new Date() <= new Date(event.rsvpDeadline))
 
   return (
+    <AuthWrapper>
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <Button variant="ghost" asChild className="mb-6">
         <Link href="/events">
@@ -265,5 +267,6 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
         </div>
       </div>
     </div>
+    </AuthWrapper>
   )
 }
