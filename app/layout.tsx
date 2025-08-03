@@ -1,11 +1,12 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import "./globals.css"
 import { Providers } from "@/components/providers"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Toaster } from "@/components/ui/sonner"
+import { PageLoader } from "@/components/Loader"
+import ShootingStars  from "@/components/shooting-stars"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
   title: "Epoch - Innovation & Learning",
   description: "Join Epoch for workshops, projects, and networking opportunities",
   keywords: ["tech club", "programming", "workshops", "events", "projects"],
-    generator: 'v0.dev'
+  generator: 'Krishna'
 }
 
 export default function RootLayout({
@@ -25,7 +26,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <Providers>
-          <div className="min-h-screen flex flex-col">
+          <PageLoader />
+          {/* Shooting stars background */}
+          {/* <ShootingStars /> */}
+          <div className="min-h-screen flex flex-col relative z-10">
             <Navbar />
             <main className="flex-1">{children}</main>
             <Footer />
