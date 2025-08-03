@@ -10,29 +10,30 @@ export const metadata = {
 export default function AboutPage() {
   const team = [
     {
-      name: "Alex Johnson",
-      role: "President",
-      bio: "Full-stack developer with 5+ years experience. Passionate about building inclusive tech communities.",
+      name: "Lokesh Kudipudi",
+      role: "Club Lead",
+      bio: "Web development and Medicine Learning enthusiastic, Passionate about building impactful,user-centric applications",
       skills: ["React", "Node.js", "Python", "Leadership"],
     },
     {
-      name: "Sarah Chen",
-      role: "Vice President",
-      bio: "UI/UX designer and frontend developer. Loves creating beautiful and accessible user experiences.",
-      skills: ["Design", "React", "TypeScript", "Figma"],
+      name: "Krishna Jain",
+      role: "Club Co-Lead",
+      bio: "Full Stack Developer and AI/ML enthusiast, passionate about building innovative solutions and mentoring others.",
+      skills: ["FullStack", "Docker", "Next.js", "AIML"],
     },
     {
-      name: "Mike Rodriguez",
-      role: "Technical Lead",
-      bio: "DevOps engineer and cloud architect. Enjoys mentoring and sharing knowledge about scalable systems.",
-      skills: ["AWS", "Docker", "Kubernetes", "Go"],
+      name: "G Rithvik Rao",
+      role: "Core Member",
+      bio: "Experienced in building responsive, user-focused applications with clean design and efficient code across web and mobile platforms.",
+      skills: ["TypeScript", "FullStack", "Node.js", "Gamer"],
     },
     {
-      name: "Emily Davis",
-      role: "Events Coordinator",
-      bio: "Project manager turned developer. Specializes in organizing engaging tech events and workshops.",
-      skills: ["Event Planning", "JavaScript", "Project Management", "Community Building"],
+      name: "Harshini Reddy",
+      role: "Core Member",
+      bio: "Curious mind exploring the intersections of AI, machine learning, and data science. ",
+      skills: ["Event Planning", "JavaScript", "Community Building", "HTML/CSS"],
     },
+    // Add more team members as needed
   ]
 
   const values = [
@@ -64,9 +65,8 @@ export default function AboutPage() {
       {/* Hero Section */}
       <div className="text-center mb-16">
         <h1 className="text-4xl font-bold mb-6">About Epoch</h1>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-          We're a community of passionate developers, designers, and tech enthusiasts dedicated to learning, building,
-          and growing together in the ever-evolving world of technology.
+        <p className="text-2xl text-muted-foreground max-w-3xl mx-auto">
+          EPOCH is a vibrant club dedicated to harnessing the transformative potential of Artificial Intelligence and Machine Learning to address real-world challenges. We welcome students of all backgrounds, from beginners to experts, fostering a collaborative environment where hands-on experiences and critical thinking thrive.
         </p>
       </div>
 
@@ -78,7 +78,7 @@ export default function AboutPage() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              To create an inclusive and supportive environment where technology enthusiasts can learn, collaborate, and
+              To create an inclusive and supportive environment where Machine Learning enthusiasts can learn, collaborate, and
               innovate together. We strive to bridge the gap between academic learning and real-world application
               through hands-on projects, workshops, and mentorship opportunities.
             </p>
