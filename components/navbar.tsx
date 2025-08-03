@@ -1,6 +1,6 @@
 "use client"
-
 import { useState, useEffect } from "react"
+import { useRouter } from 'next/router';
 import Link from "next/link"
 import { useSession, signIn, signOut } from "next-auth/react"
 import { Button } from "@/components/ui/button"
