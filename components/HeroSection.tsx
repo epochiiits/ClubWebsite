@@ -16,7 +16,7 @@
 //         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
 //         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-pulse delay-500"></div>
 //       </div>
-      
+
 //       {/* Floating Particles */}
 //       <div className="absolute inset-0">
 //         {[...Array(30)].map((_, i) => (
@@ -89,16 +89,40 @@
 //     </section>
 //   )
 // }
-"use client"
+"use client";
 
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
-import { Typewriter } from 'react-simple-typewriter'
-import Lottie from 'lottie-react'
-import heroAnimation from '@/public/lottie/SpaceBoy.json'
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import { Typewriter } from "react-simple-typewriter";
+import Lottie from "lottie-react";
+import heroAnimation from "@/public/lottie/SpaceBoy.json";
+import { useEffect, useState } from "react";
 
 export default function HeroSection() {
+  // Use client-side state for particle positions
+  const [particles, setParticles] = useState<
+    Array<{
+      left: string;
+      top: string;
+      delay: string;
+      duration: string;
+    }>
+  >([]);
+
+  // Generate particles after component mounts
+  useEffect(() => {
+    const newParticles = Array(30)
+      .fill(null)
+      .map(() => ({
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        delay: `${Math.random() * 5}s`,
+        duration: `${3 + Math.random() * 4}s`,
+      }));
+    setParticles(newParticles);
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/20 via-background to-secondary/20 py-5">
       {/* Animated Background Elements */}
@@ -107,20 +131,20 @@ export default function HeroSection() {
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
-      
+
       {/* Floating Particles */}
       <div className="absolute inset-0">
-        {[...Array(30)].map((_, i) => (
+        {particles.map((particle, i) => (
           <div
             key={i}
             className="absolute w-1 h-1 bg-primary/20 rounded-full animate-pulse"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${3 + Math.random() * 4}s`
+              left: particle.left,
+              top: particle.top,
+              animationDelay: particle.delay,
+              animationDuration: particle.duration,
             }}
-          ></div>
+          />
         ))}
       </div>
 
@@ -139,10 +163,10 @@ export default function HeroSection() {
             {/* Typewriter Heading */}
             <div>
               <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-foreground leading-[1.1] tracking-tight">
-                Welcome to{' '}
+                Welcome to{" "}
                 <span className="block text-primary mt-2">
                   <Typewriter
-                    words={['Epoch', 'Innovation']}
+                    words={["Epoch", "Innovation"]}
                     loop={0}
                     cursor
                     cursorStyle="|"
@@ -155,26 +179,30 @@ export default function HeroSection() {
             </div>
 
             <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-xl">
-              Join our community of passionate developers and tech enthusiasts. Learn, build, and grow
-              together through workshops, projects, and networking events.
+              Join our community of passionate developers and
+              tech enthusiasts. Learn, build, and grow together
+              through workshops, projects, and networking events.
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 lg:gap-6 pt-4">
-              <Button 
-                size="lg" 
-                className="px-8 py-4 text-lg font-semibold shadow-2xl hover:shadow-primary/25 transition-all duration-300 transform hover:scale-105 group h-14" 
+              <Button
+                size="lg"
+                className="px-8 py-4 text-lg font-semibold shadow-2xl hover:shadow-primary/25 transition-all duration-300 transform hover:scale-105 group h-14"
                 asChild
               >
-                <Link href="/events" className="flex items-center gap-2">
+                <Link
+                  href="/events"
+                  className="flex items-center gap-2"
+                >
                   Upcoming Events
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 backdrop-blur-sm h-14" 
+              <Button
+                variant="outline"
+                size="lg"
+                className="px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 backdrop-blur-sm h-14"
                 asChild
               >
                 <Link href="/about">Learn More</Link>
@@ -185,9 +213,9 @@ export default function HeroSection() {
           {/* Right Column - Lottie Animation */}
           <div className="flex justify-center lg:justify-end order-first lg:order-last">
             <div className="relative w-80 h-80 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px] xl:w-[500px] xl:h-[500px]">
-              <Lottie 
-                animationData={heroAnimation} 
-                loop={true} 
+              <Lottie
+                animationData={heroAnimation}
+                loop={true}
                 className="w-full h-full drop-shadow-2xl"
               />
               {/* Enhanced glow effects */}
@@ -205,5 +233,5 @@ export default function HeroSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -1,19 +1,30 @@
-"use client"
-import { useState, useEffect } from "react"
-import { useRouter } from 'next/router';
-import Link from "next/link"
-import { useSession, signIn, signOut } from "next-auth/react"
-import { Button } from "@/components/ui/button"
+"use client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { Menu, X, User, Settings, LogOut, Shield } from "lucide-react"
+} from "@/components/ui/dropdown-menu";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
+import { ThemeToggle } from "@/components/theme-toggle";
+import {
+  Menu,
+  X,
+  User,
+  Settings,
+  LogOut,
+  Shield,
+} from "lucide-react";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -24,43 +35,46 @@ const navigation = [
   { name: "Podcast", href: "/podcast" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
-]
+];
 
 export function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const { data: session, status } = useSession()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { data: session, status } = useSession();
 
   // Close mobile menu when clicking outside or on escape
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setMobileMenuOpen(false)
+      if (e.key === "Escape") {
+        setMobileMenuOpen(false);
       }
-    }
+    };
 
     if (mobileMenuOpen) {
-      document.addEventListener('keydown', handleEscape)
+      document.addEventListener("keydown", handleEscape);
       // Prevent body scroll when menu is open
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset'
+      document.body.style.overflow = "unset";
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'unset'
-    }
-  }, [mobileMenuOpen])
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
 
   const handleMenuToggle = () => {
-    console.log('Menu toggle clicked, current state:', mobileMenuOpen)
-    setMobileMenuOpen(!mobileMenuOpen)
-  }
+    console.log(
+      "Menu toggle clicked, current state:",
+      mobileMenuOpen
+    );
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   const handleMenuClose = () => {
-    console.log('Closing menu')
-    setMobileMenuOpen(false)
-  }
+    console.log("Closing menu");
+    setMobileMenuOpen(false);
+  };
 
   return (
     <>
@@ -68,7 +82,9 @@ export function Navbar() {
         <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
           <div className="flex lg:flex-1">
             <Link href="/" className="-m-1.5 p-1.5">
-              <span className="text-2xl font-bold text-primary">Epoch</span>
+              <span className="text-2xl font-bold text-primary">
+                Epoch
+              </span>
             </Link>
           </div>
 
@@ -79,10 +95,14 @@ export function Navbar() {
               className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
               onClick={handleMenuToggle}
               aria-expanded={mobileMenuOpen}
-              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-label={
+                mobileMenuOpen ? "Close menu" : "Open menu"
+              }
             >
               <span className="sr-only">
-                {mobileMenuOpen ? "Close main menu" : "Open main menu"}
+                {mobileMenuOpen
+                  ? "Close main menu"
+                  : "Open main menu"}
               </span>
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" aria-hidden="true" />
@@ -112,19 +132,37 @@ export function Navbar() {
             ) : session ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Button
+                    variant="ghost"
+                    className="relative h-8 w-8 rounded-full"
+                  >
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={session.user?.image || ""} alt={session.user?.name || ""} />
-                      <AvatarFallback>{session.user?.name?.charAt(0) || "U"}</AvatarFallback>
+                      <AvatarImage
+                        src={session.user?.image || ""}
+                        alt={session.user?.name || ""}
+                      />
+                      <AvatarFallback>
+                        {session.user?.name?.charAt(0) || "U"}
+                      </AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuContent
+                  className="w-56"
+                  align="end"
+                  forceMount
+                >
                   <div className="flex items-center justify-start gap-2 p-2">
                     <div className="flex flex-col space-y-1 leading-none">
-                      {session.user?.name && <p className="font-medium">{session.user.name}</p>}
+                      {session.user?.name && (
+                        <p className="font-medium">
+                          {session.user.name}
+                        </p>
+                      )}
                       {session.user?.email && (
-                        <p className="w-[200px] truncate text-sm text-muted-foreground">{session.user.email}</p>
+                        <p className="w-[200px] truncate text-sm text-muted-foreground">
+                          {session.user.email}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -155,14 +193,23 @@ export function Navbar() {
                     </>
                   )}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => signOut()}>
+                  <DropdownMenuItem
+                    onClick={() =>
+                      signOut({
+                        callbackUrl: "/",
+                        redirect: true,
+                      })
+                    }
+                  >
                     <LogOut className="mr-2 h-4 w-4" />
                     Sign out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button onClick={() => signIn("google")}>Sign in</Button>
+              <Button onClick={() => signIn("google")}>
+                Sign in
+              </Button>
             )}
           </div>
         </nav>
@@ -177,12 +224,18 @@ export function Navbar() {
             onClick={handleMenuClose}
             aria-hidden="true"
           />
-          
+
           {/* Menu panel */}
           <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm border-l shadow-xl">
             <div className="flex items-center justify-between">
-              <Link href="/" className="-m-1.5 p-1.5" onClick={handleMenuClose}>
-                <span className="text-2xl font-bold text-primary">Epoch</span>
+              <Link
+                href="/"
+                className="-m-1.5 p-1.5"
+                onClick={handleMenuClose}
+              >
+                <span className="text-2xl font-bold text-primary">
+                  Epoch
+                </span>
               </Link>
               <button
                 type="button"
@@ -193,7 +246,7 @@ export function Navbar() {
                 <X className="h-6 w-6" aria-hidden="true" />
               </button>
             </div>
-            
+
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-border">
                 <div className="space-y-2 py-6">
@@ -208,26 +261,38 @@ export function Navbar() {
                     </Link>
                   ))}
                 </div>
-                
+
                 <div className="py-6">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm font-medium">Theme</span>
+                    <span className="text-sm font-medium">
+                      Theme
+                    </span>
                     <ThemeToggle />
                   </div>
-                  
+
                   {session ? (
                     <div className="space-y-2">
                       <div className="flex items-center space-x-3 px-3 py-2">
                         <Avatar className="h-8 w-8">
-                          <AvatarImage src={session.user?.image || ""} alt={session.user?.name || ""} />
-                          <AvatarFallback>{session.user?.name?.charAt(0) || "U"}</AvatarFallback>
+                          <AvatarImage
+                            src={session.user?.image || ""}
+                            alt={session.user?.name || ""}
+                          />
+                          <AvatarFallback>
+                            {session.user?.name?.charAt(0) ||
+                              "U"}
+                          </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="text-sm font-medium">{session.user?.name}</p>
-                          <p className="text-xs text-muted-foreground">{session.user?.email}</p>
+                          <p className="text-sm font-medium">
+                            {session.user?.name}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {session.user?.email}
+                          </p>
                         </div>
                       </div>
-                      
+
                       <Link
                         href="/profile"
                         className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
@@ -235,7 +300,7 @@ export function Navbar() {
                       >
                         Profile
                       </Link>
-                      
+
                       {session.user?.role !== "admin" && (
                         <Link
                           href="/my-rsvps"
@@ -245,7 +310,7 @@ export function Navbar() {
                           My RSVPs
                         </Link>
                       )}
-                      
+
                       {session.user?.role === "admin" && (
                         <Link
                           href="/admin"
@@ -255,11 +320,14 @@ export function Navbar() {
                           Admin Dashboard
                         </Link>
                       )}
-                      
+
                       <button
                         onClick={() => {
-                          signOut()
-                          handleMenuClose()
+                          signOut({
+                            callbackUrl: "/",
+                            redirect: true,
+                          });
+                          handleMenuClose();
                         }}
                         className="-mx-3 block w-full text-left rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
                       >
@@ -269,8 +337,8 @@ export function Navbar() {
                   ) : (
                     <Button
                       onClick={() => {
-                        signIn("google")
-                        handleMenuClose()
+                        signIn("google");
+                        handleMenuClose();
                       }}
                       className="w-full"
                     >
@@ -284,5 +352,5 @@ export function Navbar() {
         </div>
       )}
     </>
-  )
+  );
 }
