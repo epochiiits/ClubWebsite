@@ -155,10 +155,11 @@ export function Navbar() {
                     </>
                   )}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => signOut()}>
+                  <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/' })}>
                     <LogOut className="mr-2 h-4 w-4" />
                     Sign out
                   </DropdownMenuItem>
+
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
@@ -258,13 +259,14 @@ export function Navbar() {
                       
                       <button
                         onClick={() => {
-                          signOut()
+                          signOut({ callbackUrl: '/' })
                           handleMenuClose()
                         }}
                         className="-mx-3 block w-full text-left rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
                       >
                         Sign out
                       </button>
+
                     </div>
                   ) : (
                     <Button
