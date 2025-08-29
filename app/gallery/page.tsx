@@ -9,7 +9,7 @@ import { AuthWrapper } from "@/components/auth-wrapper";
 async function getGalleries() {
   try {
     const response = await fetch(`${process.env.NEXTAUTH_URL}/api/gallery`, {
-      cache: "no-store",
+      cache: "force-dynamic",
     });
     if (!response.ok) throw new Error("Failed to fetch galleries");
     return await response.json();
