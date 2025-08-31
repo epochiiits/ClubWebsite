@@ -37,6 +37,22 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
     }
   }, [eventId, session])
 
+  // Helper function to convert UTC date to local display format
+  const formatEventDateTime = (utcDateString: string) => {
+    const utcDate = new Date(utcDateString)
+    
+    // Convert UTC to local time by removing the timezone offset
+    const localDate = new Date(utcDate.getTime() + utcDate.getTimezoneOffset() * 60000)
+    
+    return {
+      date: localDate.toLocaleDateString(),
+      time: localDate.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    }
+  }
+
   const fetchEvent = async () => {
     try {
       const response = await fetch(`/api/events/${eventId}`)
@@ -141,6 +157,10 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
 
   const isUpcoming = new Date(event.date) >= new Date()
   const canRsvp = isUpcoming && (!event.rsvpDeadline || new Date() <= new Date(event.rsvpDeadline))
+  
+  // Format the event date and time for display
+  const eventDateTime = formatEventDateTime(event.date)
+  const rsvpDeadlineDateTime = event.rsvpDeadline ? formatEventDateTime(event.rsvpDeadline) : null
 
   return (
     <AuthWrapper>
@@ -163,7 +183,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
             <CardHeader>
               <div className="flex items-center justify-between mb-4">
                 <Badge variant={isUpcoming ? "secondary" : "outline"}>{isUpcoming ? "Upcoming" : "Past Event"}</Badge>
-                <Badge variant="outline">{new Date(event.date).toLocaleDateString()}</Badge>
+                <Badge variant="outline">{eventDateTime.date}</Badge>
               </div>
               <CardTitle className="text-3xl">{event.title}</CardTitle>
               <CardDescription className="text-lg">{event.description}</CardDescription>
@@ -181,13 +201,8 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
               <div className="flex items-center text-sm">
                 <Calendar className="mr-3 h-4 w-4 text-muted-foreground" />
                 <div>
-                  <p className="font-medium">{new Date(event.date).toLocaleDateString()}</p>
-                  <p className="text-muted-foreground">
-                    {new Date(event.date).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
+                  <p className="font-medium">{eventDateTime.date}</p>
+                  <p className="text-muted-foreground">{eventDateTime.time}</p>
                 </div>
               </div>
 
@@ -209,12 +224,14 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                 </div>
               )}
 
-              {event.rsvpDeadline && (
+              {event.rsvpDeadline && rsvpDeadlineDateTime && (
                 <div className="flex items-center text-sm">
                   <Clock className="mr-3 h-4 w-4 text-muted-foreground" />
                   <div>
                     <p className="font-medium">RSVP Deadline</p>
-                    <p className="text-muted-foreground">{new Date(event.rsvpDeadline).toLocaleDateString()}</p>
+                    <p className="text-muted-foreground">
+                      {rsvpDeadlineDateTime.date} at {rsvpDeadlineDateTime.time}
+                    </p>
                   </div>
                 </div>
               )}
