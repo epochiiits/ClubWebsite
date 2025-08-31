@@ -36,10 +36,12 @@ export default function NewEventPage() {
 
     setLoading(true)
     try {
+      // Move variable declarations outside the object
+      const localDate = new Date(formData.date)
+      const utcDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000)
+      
       const submitData = {
         ...formData,
-        const localDate = new Date(formData.date);
-        const utcDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
         date: utcDate.toISOString(),
         rsvpDeadline: formData.rsvpDeadline ? new Date(formData.rsvpDeadline).toISOString() : undefined,
         maxAttendees: formData.maxAttendees ? Number.parseInt(formData.maxAttendees) : undefined,
