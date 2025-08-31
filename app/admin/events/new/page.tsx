@@ -38,7 +38,9 @@ export default function NewEventPage() {
     try {
       const submitData = {
         ...formData,
-        date: new Date(formData.date).toISOString(),
+        const localDate = new Date(formData.date);
+        const utcDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
+        date: utcDate.toISOString(),
         rsvpDeadline: formData.rsvpDeadline ? new Date(formData.rsvpDeadline).toISOString() : undefined,
         maxAttendees: formData.maxAttendees ? Number.parseInt(formData.maxAttendees) : undefined,
       }
