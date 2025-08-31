@@ -38,6 +38,18 @@ export default function EditEventPage({ params }: { params: Promise<{ id: string
     getParams()
   }, [params])
 
+  // Helper function to convert UTC date to local datetime-local format
+  const utcToLocalDatetime = (utcDate: Date): string => {
+    const localDate = new Date(utcDate.getTime() - utcDate.getTimezoneOffset() * 60000)
+    return localDate.toISOString().slice(0, 16)
+  }
+
+  // Helper function to convert local datetime-local to UTC
+  const localDatetimeToUtc = (localDatetime: string): Date => {
+    const localDate = new Date(localDatetime)
+    return new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000)
+  }
+
   const fetchEvent = async (id: string) => {
     try {
       const response = await fetch(`/api/events/${id}`)
@@ -49,11 +61,11 @@ export default function EditEventPage({ params }: { params: Promise<{ id: string
         setFormData({
           title: event.title || "",
           description: event.description || "",
-          date: eventDate.toISOString().slice(0, 16),
+          date: utcToLocalDatetime(eventDate),
           venue: event.venue || "",
           image: event.image || "",
           maxAttendees: event.maxAttendees?.toString() || "",
-          rsvpDeadline: rsvpDate ? rsvpDate.toISOString().slice(0, 16) : "",
+          rsvpDeadline: rsvpDate ? utcToLocalDatetime(rsvpDate) : "",
         })
       } else {
         toast.error("Event not found")
@@ -77,8 +89,8 @@ export default function EditEventPage({ params }: { params: Promise<{ id: string
     try {
       const submitData = {
         ...formData,
-        date: new Date(formData.date).toISOString(),
-        rsvpDeadline: formData.rsvpDeadline ? new Date(formData.rsvpDeadline).toISOString() : undefined,
+        date: localDatetimeToUtc(formData.date).toISOString(),
+        rsvpDeadline: formData.rsvpDeadline ? localDatetimeToUtc(formData.rsvpDeadline).toISOString() : undefined,
         maxAttendees: formData.maxAttendees ? Number.parseInt(formData.maxAttendees) : undefined,
       }
 
