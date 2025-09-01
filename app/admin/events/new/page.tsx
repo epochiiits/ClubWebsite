@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -27,6 +26,12 @@ export default function NewEventPage() {
     rsvpDeadline: "",
   })
 
+  // Helper function to convert local datetime-local to UTC
+  const localDatetimeToUtc = (localDatetime: string): Date => {
+    const localDate = new Date(localDatetime)
+    return new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000)
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!formData.title || !formData.description || !formData.date || !formData.venue) {
@@ -36,14 +41,10 @@ export default function NewEventPage() {
 
     setLoading(true)
     try {
-      // Move variable declarations outside the object
-      const localDate = new Date(formData.date)
-      const utcDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000)
-      
       const submitData = {
         ...formData,
-        date: utcDate.toISOString(),
-        rsvpDeadline: formData.rsvpDeadline ? new Date(formData.rsvpDeadline).toISOString() : undefined,
+        date: localDatetimeToUtc(formData.date).toISOString(),
+        rsvpDeadline: formData.rsvpDeadline ? localDatetimeToUtc(formData.rsvpDeadline).toISOString() : undefined,
         maxAttendees: formData.maxAttendees ? Number.parseInt(formData.maxAttendees) : undefined,
       }
 
@@ -87,7 +88,7 @@ export default function NewEventPage() {
           <Card>
             <CardHeader>
               <CardTitle>Event Details</CardTitle>
-              <CardDescription>Enter the details for your new event</CardDescription>
+              <CardDescription>Fill in the details for your new event</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
