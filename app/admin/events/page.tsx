@@ -30,6 +30,20 @@ export default function AdminEventsPage() {
     fetchEvents()
   }, [searchTerm])
 
+  // Helper function to convert UTC date to local time for display
+  const formatEventDate = (utcDateString: string) => {
+    const utcDate = new Date(utcDateString)
+    const localDate = new Date(utcDate.getTime() + utcDate.getTimezoneOffset() * 60000)
+    return localDate.toLocaleDateString()
+  }
+
+  // Helper function to check if event is upcoming
+  const isEventUpcoming = (utcDateString: string) => {
+    const utcDate = new Date(utcDateString)
+    const localDate = new Date(utcDate.getTime() + utcDate.getTimezoneOffset() * 60000)
+    return localDate >= new Date()
+  }
+
   const fetchEvents = async () => {
     try {
       const url = new URL("/api/events", window.location.origin)
@@ -129,13 +143,13 @@ export default function AdminEventsPage() {
                   <TableCell>
                     <div className="flex items-center">
                       <Calendar className="mr-2 h-4 w-4" />
-                      {new Date(event.date).toLocaleDateString()}
+                      {formatEventDate(event.date)}
                     </div>
                   </TableCell>
                   <TableCell>{event.venue}</TableCell>
                   <TableCell>
-                    <Badge variant={new Date(event.date) >= new Date() ? "default" : "secondary"}>
-                      {new Date(event.date) >= new Date() ? "Upcoming" : "Past"}
+                    <Badge variant={isEventUpcoming(event.date) ? "default" : "secondary"}>
+                      {isEventUpcoming(event.date) ? "Upcoming" : "Past"}
                     </Badge>
                   </TableCell>
                   <TableCell>

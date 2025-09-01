@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Images } from "lucide-react";
@@ -8,9 +10,7 @@ import { AuthWrapper } from "@/components/auth-wrapper";
 
 async function getGalleries() {
   try {
-    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/gallery`, {
-      cache: "no-store",
-    });
+    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/gallery`);
     if (!response.ok) throw new Error("Failed to fetch galleries");
     return await response.json();
   } catch (error) {

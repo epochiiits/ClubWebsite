@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Users, Code, Zap, ArrowRight, Github, ExternalLink, MapPin, Clock } from "lucide-react"
-import './globals.css'
 import HeroSection from "@/components/HeroSection"
 import CTASection from "@/components/CTAsection"
 
